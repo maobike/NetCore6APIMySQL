@@ -21,6 +21,17 @@ builder.Services.AddSingleton(mySQLConfiguration);// Para siempre tener la caden
 
 builder.Services.AddScoped<IUserRepository, UserRepository>(); // Agregar al contenedor de dependencias la instancia al repositorio
 
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NewPolicy", app =>
+    {
+        app.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("NewPolicy");
 
 app.UseAuthorization();
 
